@@ -1,0 +1,11 @@
+{
+    "shuffled_pretrain": {
+        "file_name": "pretrain/shuffled_pretrain.jsonl",
+        "columns": {
+            "prompt": "text"
+        }
+    },
+    "instruct_openscores_ast": {
+        "file_name": "opencores/instruct_openscores_ast.jsonl"
+    }
+}
