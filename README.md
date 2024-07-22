@@ -1,6 +1,6 @@
 # Veriseek
 
-Official implement of paper "Large Language Model for Verilog Generation with Golden Code Feedback".
+Official implement of paper "Large Language Model for Verilog Generation with Golden Code Feedback". The best model weight is available at https://huggingface.co/WANGNingroci/VeriSeek.
 
 ![veriseek](images/result.png)
 
@@ -9,8 +9,10 @@ Official implement of paper "Large Language Model for Verilog Generation with Go
 - [Project Description](#project-description)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
+    - [Generation](#Generation)
+    - [Pretrain](#Pretrain)
+    - [PPO](#PPO)
+- [Acknowledgement](#Acknowledgement)
 
 ## Update Log
 - 2024.07.22: Initial version of Veriseek. Add training code and config file.
