@@ -81,8 +81,7 @@ Give me the complete code.
 """
 
 gpu_id = 0
-# model_name = "WANGNingroci/VeriSeek"
-model_name = "/data/ckpt/wangning/deepseek-7B/ppo_merged/"
+model_name = "WANGNingroci/VeriSeek"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.float16, device_map=gpu_id)
 model.eval()
