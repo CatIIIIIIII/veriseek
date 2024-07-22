@@ -94,7 +94,7 @@ print(output_trunc)
 ```
 
 ### Pretrain
-The pretraining data is available at https://huggingface.co/datasets/WANGNingroci/vgen_cpp.
+The pretraining data is available at https://huggingface.co/datasets/WANGNingroci/vgen_cpp. Download and put it in the `data/pretrain` directory.
 To pretrain the model, run the following command:
 
 ```bash
@@ -102,17 +102,11 @@ bash src/scripts/single_node.sh src/configs/pretrain/deepseek-7B.yaml
 ```
 
 ### PPO
-The reinforcement learning algorithm used in this project is Proximal Policy Optimization (PPO). Opencores data is available at https://huggingface.co/datasets/WANGNingroci/opencores. To train the model with PPO, run the following command:
+The reinforcement learning algorithm used in this project is Proximal Policy Optimization (PPO). Opencores data is available at https://huggingface.co/datasets/WANGNingroci/opencores. Download and put it in the `data/opencores` directory. To train the model with PPO, run the following command:
 
 ```bash
 bash src/scripts/single_node.sh src/configs/preference/deepseek-7B_ppo_ast.yaml
 ```
 
-## Contributing
-We welcome contributions to this project. To contribute, please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch for your feature or fix: `git checkout -b [branch name]`
-3. Make your changes and commit them: `git commit -m "[commit message]"`
-4. Push your branch to GitHub: `git push origin [branch name]`
-5. Open a pull request and describe your changes.
+## Acknowledgement
+This repo benefits from [LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory). Thanks for their wonderful works.
