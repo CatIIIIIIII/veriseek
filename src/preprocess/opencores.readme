@@ -1,0 +1,1 @@
+clean_opencores.py -> check_code_ann.py -> gen_opencores.py -> check_ast.py
