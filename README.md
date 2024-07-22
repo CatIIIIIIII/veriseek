@@ -2,6 +2,8 @@
 
 Official implement of paper "Large Language Model for Verilog Generation with Golden Code Feedback".
 
+![veriseek](images/result.png)
+
 ## Table of Contents
 - [Update Log](#update-log)
 - [Project Description](#project-description)
