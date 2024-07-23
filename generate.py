@@ -54,5 +54,5 @@ output = tokenizer.decode(sample[0])
 
 stop_word = "endmodule"
 output_trunc = stop_at_stop_token(output, [stop_word])
-output_trunc += "endmodule"
+output_trunc += stop_word
 print(output_trunc)
