@@ -12,9 +12,11 @@ Official implement of paper "Large Language Model for Verilog Generation with Go
     - [Generation](#Generation)
     - [Pretrain](#Pretrain)
     - [PPO](#PPO)
+- [Citation](#Citation)
 - [Acknowledgement](#Acknowledgement)
 
 ## Update Log
+- 2024.08.02: Add citation information.
 - 2024.07.22: Initial version of Veriseek. Add training code and config file.
 
 ## Project Description
@@ -109,6 +111,18 @@ The reinforcement learning algorithm used in this project is Proximal Policy Opt
 
 ```bash
 bash src/scripts/single_node.sh src/configs/preference/deepseek-7B_ppo_ast.yaml
+```
+
+## Citation
+If you find this project helpful, please consider citing our paper:
+
+```
+@article{wang2024large,
+  title={Large Language Model for Verilog Generation with Golden Code Feedback},
+  author={Wang, Ning and Yao, Bingkun and Zhou, Jie and Wang, Xi and Jiang, Zhe and Guan, Nan},
+  journal={arXiv preprint arXiv:2407.18271},
+  year={2024}
+}
 ```
 
 ## Acknowledgement
