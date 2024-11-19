@@ -54,19 +54,53 @@ class ParseTreeNormalizer:
             return [self.normalize(n) for n in node]
         return node
 
+# def compare_trees(tree1, tree2):
+#     if tree1 == tree2:
+#         return 1.0  # Trees are identical
+#     if isinstance(tree1, tuple) and isinstance(tree2, tuple):
+#         if tree1[0] == tree2[0]:
+#             children1 = tree1[1]
+#             children2 = tree2[1]
+#             if len(children1) == len(children2):
+#                 return sum(compare_trees(c1, c2) for c1, c2 in zip(children1, children2)) / len(children1)
+#             else:
+#                 # Penalize for different number of children
+#                 return sum(compare_trees(c1, c2) for c1, c2 in zip(children1, children2)) / max(len(children1), len(children2))
+#     return 0.0  # Trees are different
+
+
 def compare_trees(tree1, tree2):
     if tree1 == tree2:
-        return 1.0  # Trees are identical
-    if isinstance(tree1, tuple) and isinstance(tree2, tuple):
-        if tree1[0] == tree2[0]:
-            children1 = tree1[1]
-            children2 = tree2[1]
-            if len(children1) == len(children2):
-                return sum(compare_trees(c1, c2) for c1, c2 in zip(children1, children2)) / len(children1)
-            else:
-                # Penalize for different number of children
-                return sum(compare_trees(c1, c2) for c1, c2 in zip(children1, children2)) / max(len(children1), len(children2))
-    return 0.0  # Trees are different
+        return 1.0
+
+    if isinstance(tree1, tuple) and isinstance(tree2, tuple) and tree1[0] == tree2[0]:
+        children1 = set(tree1[1:]) if len(tree1) > 1 else set()
+        children2 = set(tree2[1:]) if len(tree2) > 1 else set()
+        
+        s = 0
+        compared_children = set()
+        for child1 in children1:
+            best_match = 0
+            best_child = None
+            for child2 in children2:
+                if child2 not in compared_children:
+                    if isinstance(child1, tuple) and isinstance(child2, tuple) and child1[0] == child2[0]:
+                        similarity = sim_ast(child1, child2)
+                        if similarity > best_match:
+                            best_match = similarity
+                            best_child = child2
+            if best_child:
+                s += best_match
+                compared_children.add(best_child)
+        
+        max_count = max(len(children1), len(children2))
+        if max_count > 0:
+            return s / max_count
+        else:
+            return 1.0
+
+    return 0.0
+
 
 def extract_module_name(text):
     # Define the regex pattern to match the module name between 'Module name:' and 'Input ports:'
@@ -513,39 +547,87 @@ class CustomPPOCompilerTrainer(PPOTrainer, Trainer):
                     min_stop_index = stop_index
             return decoded_string[:min_stop_index]
         
+        # def filter(gen):
+        #     gen = gen.strip('\n')
+        #     # remove the wrong comments line start with '#'
+        #     gen_lines = gen.split('\n')
+        #     gen_lines = [line for line in gen_lines if not line.strip().startswith('#')]
+            
+        #     open_comment = False
+        #     result = []
+        #     for line in gen_lines:
+        #         stripped_line = line.strip()
+        #         if stripped_line.startswith('/*') and stripped_line.endswith('*/'):
+        #             continue  # Ignore complete comments
+        #         elif stripped_line.startswith('/*'):
+        #             if open_comment:
+        #                 continue  # Ignore if there's already an open comment
+        #             open_comment = True
+        #         elif stripped_line.endswith('*/'):
+        #             if not open_comment:
+        #                 continue  # Ignore unpaired closing comment
+        #             open_comment = False
+        #         elif '/*' in stripped_line and '*/' not in stripped_line:
+        #             open_comment = True
+        #         elif '*/' in stripped_line and '/*' not in stripped_line:
+        #             if not open_comment:
+        #                 continue  # Ignore unpaired closing comment
+        #             open_comment = False
+
+        #         result.append(line)
+
+        #     result = '\n'.join(result)
+        #     if 'endmodule' not in result and set(result) != {'\n'}:
+        #         result += '\nendmodule'
+        #     return result
+        
         def filter(gen):
-            gen = gen.strip('\n')
             # remove the wrong comments line start with '#'
             gen_lines = gen.split('\n')
             gen_lines = [line for line in gen_lines if not line.strip().startswith('#')]
+            return '\n'.join(gen_lines) + "endmodule"
+        
+        # def filter(gen):
+        #     gen = gen.strip('\n')
+        #     gen_lines = gen.split('\n')
             
-            open_comment = False
-            result = []
-            for line in gen_lines:
-                stripped_line = line.strip()
-                if stripped_line.startswith('/*') and stripped_line.endswith('*/'):
-                    continue  # Ignore complete comments
-                elif stripped_line.startswith('/*'):
-                    if open_comment:
-                        continue  # Ignore if there's already an open comment
-                    open_comment = True
-                elif stripped_line.endswith('*/'):
-                    if not open_comment:
-                        continue  # Ignore unpaired closing comment
-                    open_comment = False
-                elif '/*' in stripped_line and '*/' not in stripped_line:
-                    open_comment = True
-                elif '*/' in stripped_line and '/*' not in stripped_line:
-                    if not open_comment:
-                        continue  # Ignore unpaired closing comment
-                    open_comment = False
+        #     open_comment = False
+        #     result = []
+        #     for line in gen_lines:
+        #         stripped_line = line.strip()
+                
+        #         # Check for endmodule
+        #         if 'endmodule' in stripped_line:
+        #             result.append(line)
+        #             break  # Stop processing at first endmodule
+                
+        #         # Skip single-line comments
+        #         if stripped_line.startswith('//'):
+        #             continue
+                
+        #         # Handle multi-line comments
+        #         if '/*' in stripped_line and '*/' in stripped_line:
+        #             continue  # Skip single-line multi-line comments
+        #         elif '/*' in stripped_line:
+        #             open_comment = True
+        #             continue
+        #         elif '*/' in stripped_line:
+        #             open_comment = False
+        #             continue
+                
+        #         # Skip lines inside multi-line comments
+        #         if open_comment:
+        #             continue
+                
+        #         result.append(line)
 
-                result.append(line)
-
-            result = '\n'.join(result)
-            if 'endmodule' not in result and set(result) != {'\n'}:
-                result += '\nendmodule'
-            return result
+        #     result = '\n'.join(result)
+            
+        #     # Add endmodule if not present and the result is not empty
+        #     if 'endmodule' not in result and set(result.strip()) != set():
+        #         result += '\nendmodule'
+            
+        #     return result
         
         queries_text = self.tokenizer.batch_decode(
             queries, skip_special_tokens=True, clean_up_tokenization_spaces=True)
