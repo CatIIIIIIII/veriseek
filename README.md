@@ -2,8 +2,6 @@
 
 Official implement of paper "Large Language Model for Verilog Generation with Golden Code Feedback". The best model weight is available at https://huggingface.co/WANGNingroci/VeriSeek.
 
-![veriseek](images/result.png)
-
 ## Table of Contents
 - [Update Log](#update-log)
 - [Project Description](#project-description)
