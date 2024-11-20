@@ -1,7 +1,5 @@
 # Veriseek
 
-Official implement of paper "Large Language Model for Verilog Generation with Golden Code Feedback". The best model weight is available at https://huggingface.co/WANGNingroci/VeriSeek.
-
 ## Table of Contents
 - [Update Log](#update-log)
 - [Project Description](#project-description)
@@ -81,7 +79,7 @@ Give me the complete code.
 """
 
 gpu_id = 0
-model_name = "WANGNingroci/VeriSeek"
+model_name = "LLM-EDA/VeriSeek"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.float16, device_map=gpu_id)
 model.eval()
@@ -97,7 +95,7 @@ print(output_trunc)
 ```
 
 ### Pretrain
-The pretraining data is available at https://huggingface.co/datasets/WANGNingroci/vgen_cpp. Download and put it in the `data/pretrain` directory.
+The pretraining data is available at https://huggingface.co/datasets/LLM-EDA/vgen_cpp. Download and put it in the `data/pretrain` directory.
 To pretrain the model, run the following command:
 
 ```bash
@@ -105,23 +103,13 @@ bash src/scripts/single_node.sh src/configs/pretrain/deepseek-7B.yaml
 ```
 
 ### PPO
-The reinforcement learning algorithm used in this project is Proximal Policy Optimization (PPO). Opencores data is available at https://huggingface.co/datasets/WANGNingroci/opencores. Download and put it in the `data/opencores` directory. To train the model with PPO, run the following command:
+The reinforcement learning algorithm used in this project is Proximal Policy Optimization (PPO). Opencores data is available at https://huggingface.co/datasets/LLM-EDA/opencores. Download and put it in the `data/opencores` directory. To train the model with PPO, run the following command:
 
 ```bash
 bash src/scripts/single_node.sh src/configs/preference/deepseek-7B_ppo_ast.yaml
 ```
 
 ## Citation
-If you find this project helpful, please consider citing our paper:
-
-```
-@article{wang2024large,
-  title={Large Language Model for Verilog Generation with Golden Code Feedback},
-  author={Wang, Ning and Yao, Bingkun and Zhou, Jie and Wang, Xi and Jiang, Zhe and Guan, Nan},
-  journal={arXiv preprint arXiv:2407.18271},
-  year={2024}
-}
-```
 
 ## Acknowledgement
 This repo benefits from [LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory). Thanks for their wonderful works.
